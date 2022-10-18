@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-18 13:23-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: utopia_cms_library/admin.py:17
+msgid "related articles"
+msgstr "artículos relacionados"
+
+#: utopia_cms_library/apps.py:7
+msgid "library"
+msgstr "biblioteca"
+
+#: utopia_cms_library/models.py:7 utopia_cms_library/models.py:17
+#: utopia_cms_library/models.py:27
+msgid "name"
+msgstr "nombre"
+
+#: utopia_cms_library/models.py:10 utopia_cms_library/models.py:40
+msgid "publisher"
+msgstr "editorial"
+
+#: utopia_cms_library/models.py:11
+msgid "publishers"
+msgstr "editoriales"
+
+#: utopia_cms_library/models.py:20
+msgid "author"
+msgstr "autor"
+
+#: utopia_cms_library/models.py:21 utopia_cms_library/models.py:39
+msgid "authors"
+msgstr "autores"
+
+#: utopia_cms_library/models.py:30
+msgid "category"
+msgstr "categoría"
+
+#: utopia_cms_library/models.py:31 utopia_cms_library/models.py:43
+msgid "categories"
+msgstr "categorías"
+
+#: utopia_cms_library/models.py:37
+msgid "title"
+msgstr "título"
+
+#: utopia_cms_library/models.py:38
+msgid "year"
+msgstr "año"
+
+#: utopia_cms_library/models.py:41
+msgid "description"
+msgstr "descripción"
+
+#: utopia_cms_library/models.py:42
+msgid "cover photo"
+msgstr "foto de tapa"
+
+#: utopia_cms_library/models.py:44
+msgid "articles"
+msgstr "artículos"
+
+#: utopia_cms_library/models.py:47
+msgid "book"
+msgstr "libro"
+
+#: utopia_cms_library/models.py:48
+msgid "books"
+msgstr "libros"
