@@ -1,6 +1,7 @@
 from autoslug.fields import AutoSlugField
 
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import Article
@@ -57,3 +58,41 @@ class Book(models.Model):
 
     def __str__(self):
         return "%s - %s - %s, %d" % (self.title, self.get_authors(), self.publisher, self.year)
+
+
+class BooksNewsletterBlockRow(models.Model):
+    block = models.ForeignKey("BooksNewsletterBlockContent")
+    order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
+    book = models.ForeignKey(Book, verbose_name=_("book"))
+    text_content = models.TextField(_("text content"), blank=True, null=True)
+
+
+class BooksNewsletterBlockContent(models.Model):
+    books = models.ManyToManyField(Book, through=BooksNewsletterBlockRow, verbose_name=_("books"))
+
+    def __str__(self):
+        return ", ".join(str(book) for book in self.books.all())
+
+class BooksNewsletterBlock(models.Model):
+    newsletter = models.ForeignKey("BooksNewsletter", related_name=_("blocks"))
+    order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
+    title = models.CharField(_("title"), max_length=255, blank=True, null=True)
+    content = models.ForeignKey(BooksNewsletterBlockContent, verbose_name=_("content"))
+    footer = models.TextField(_("footer"), blank=True, null=True)
+
+
+class BooksNewsletter(models.Model):
+    day = models.DateField(_("date"), unique=True, default=timezone.now)
+    subject = models.CharField(_("subject"), max_length=255)
+    title = models.CharField(_("title"), max_length=255)
+    header = models.TextField(_("header"), blank=True, null=True)
+    footer = models.TextField(_("footer"), blank=True, null=True)
+
+    def __str__(self):
+        return "%s: %s" % (self.day, self.title)
+
+    class Meta:
+        verbose_name = _("books newsletter")
+        verbose_name_plural = _("books newsletters")
+        ordering = ("-day", )
+        get_latest_by = "day"
