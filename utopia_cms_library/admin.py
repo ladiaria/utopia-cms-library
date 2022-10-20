@@ -16,7 +16,8 @@ class BookPublisherAdmin(admin.ModelAdmin):
 
 
 class BookCategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", )
+    list_display = ("id", "name", "slug")
+    list_editable = ("name", )
 
 
 class BookArticleInline(admin.TabularInline):

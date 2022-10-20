@@ -1,3 +1,5 @@
+from autoslug.fields import AutoSlugField
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -25,6 +27,7 @@ class BookAuthor(models.Model):
 
 class BookCategory(models.Model):
     name = models.CharField(_("name"), max_length=64, unique=True)
+    slug = AutoSlugField(populate_from="name", always_update=True, null=True, blank=True)
 
     class Meta:
         verbose_name = _("category")
@@ -35,6 +38,7 @@ class BookCategory(models.Model):
 
 class Book(models.Model):
     title = models.CharField(_("title"), max_length=255, unique=True)
+    slug = AutoSlugField(populate_from="title", always_update=True, null=True, blank=True)
     year = models.PositiveSmallIntegerField(_("year"))
     authors = models.ManyToManyField(BookAuthor, verbose_name=_("authors"))
     publisher = models.ForeignKey(BookPublisher, verbose_name=_("publisher"))
