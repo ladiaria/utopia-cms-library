@@ -1,9 +1,14 @@
-from django.shortcuts import render
 from django.views.generic import ListView
 
 from utopia_cms_library.models import Book
 
 
 class BookList(ListView):
-    # TODO: receive a parameter to filter the list by category (?category=...)
     model = Book
+
+    def get_queryset(self):
+        """ Filter the list by category slug if received in the 'q' query parameter """
+        queryset, category_slug = super().get_queryset(), self.request.GET.get('q')
+        if category_slug:
+            queryset = queryset.filter(categories__slug=category_slug)
+        return queryset
