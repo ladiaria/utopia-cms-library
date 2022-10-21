@@ -1,5 +1,4 @@
 import admin_thumbnails
-from django_markdown.widgets import MarkdownWidget
 
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
@@ -54,12 +53,7 @@ class BookAdmin(admin.ModelAdmin):
 class BooksNewsletterForm(ModelForm):
 
     class Meta:
-        widgets = {
-            "subject": TextInput(attrs={'size': 140}),
-            "title": TextInput(attrs={'size': 140}),
-            "header": MarkdownWidget(),
-            "footer": MarkdownWidget(),
-        }
+        widgets = {"subject": TextInput(attrs={'size': 140}), "title": TextInput(attrs={'size': 140})}
 
 
 class BooksNewsletterBlockForm(ModelForm):
@@ -67,7 +61,7 @@ class BooksNewsletterBlockForm(ModelForm):
     class Meta:
         fields = ["order", "title", "content", "footer"]
         model = BooksNewsletterBlock
-        widgets = {"order": TextInput(attrs={"size": 3}), "footer": MarkdownWidget()}
+        widgets = {"order": TextInput(attrs={"size": 2})}
 
 
 class BooksNewsletterBlockInline(admin.TabularInline):
@@ -77,8 +71,9 @@ class BooksNewsletterBlockInline(admin.TabularInline):
 
 
 class BooksNewsletterAdmin(admin.ModelAdmin):
+    # TODO: improve list_display and try to render the footer at the end in the change_form
     form = BooksNewsletterForm
-    inlines = [BooksNewsletterBlockInline]  # TODO: improve styles
+    inlines = [BooksNewsletterBlockInline]
 
 
 class BooksNewsletterBlockRowForm(ModelForm):
@@ -86,7 +81,7 @@ class BooksNewsletterBlockRowForm(ModelForm):
     class Meta:
         fields = ["order", "book", "text_content"]
         model = BooksNewsletterBlockRow
-        widgets = {"order": TextInput(attrs={"size": 3}), "text_content": MarkdownWidget()}
+        widgets = {"order": TextInput(attrs={"size": 2})}
 
 
 class BooksNewsletterBlockRowInline(admin.TabularInline):
@@ -96,7 +91,7 @@ class BooksNewsletterBlockRowInline(admin.TabularInline):
 
 
 class BooksNewsletterBlockContentAdmin(admin.ModelAdmin):
-    # TODO: improve columns width
+    # TODO: improve list_display
     inlines = [BooksNewsletterBlockRowInline]
 
 

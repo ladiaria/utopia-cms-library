@@ -1,4 +1,5 @@
 from autoslug.fields import AutoSlugField
+from django_markdown.models import MarkdownField
 
 from django.db import models
 from django.utils import timezone
@@ -64,7 +65,14 @@ class BooksNewsletterBlockRow(models.Model):
     block = models.ForeignKey("BooksNewsletterBlockContent")
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     book = models.ForeignKey(Book, verbose_name=_("book"))
-    text_content = models.TextField(_("text content"), blank=True, null=True)
+    text_content = MarkdownField(_("text content"), blank=True, null=True)
+
+    def __str__(self):
+        return str(self.book)
+
+    class Meta:
+        verbose_name = _("books newsletter block row")
+        verbose_name_plural = _("books newsletter block rows")
 
 
 class BooksNewsletterBlockContent(models.Model):
@@ -73,20 +81,32 @@ class BooksNewsletterBlockContent(models.Model):
     def __str__(self):
         return ", ".join(str(book) for book in self.books.all())
 
+    class Meta:
+        verbose_name = _("books newsletter block content")
+        verbose_name_plural = _("books newsletter block contents")
+
+
 class BooksNewsletterBlock(models.Model):
     newsletter = models.ForeignKey("BooksNewsletter", related_name=_("blocks"))
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     title = models.CharField(_("title"), max_length=255, blank=True, null=True)
     content = models.ForeignKey(BooksNewsletterBlockContent, verbose_name=_("content"))
-    footer = models.TextField(_("footer"), blank=True, null=True)
+    footer = MarkdownField(_("footer"), blank=True, null=True)
+
+    def __str__(self):
+        return "%s - %d %s" % (self.title or _("no title"), self.content.books.count(), _("books"))
+
+    class Meta:
+        verbose_name = _("books newsletter block")
+        verbose_name_plural = _("books newsletter blocks")
 
 
 class BooksNewsletter(models.Model):
     day = models.DateField(_("date"), unique=True, default=timezone.now)
     subject = models.CharField(_("subject"), max_length=255)
     title = models.CharField(_("title"), max_length=255)
-    header = models.TextField(_("header"), blank=True, null=True)
-    footer = models.TextField(_("footer"), blank=True, null=True)
+    header = MarkdownField(_("header"), blank=True, null=True)
+    footer = MarkdownField(_("footer"), blank=True, null=True)
 
     def __str__(self):
         return "%s: %s" % (self.day, self.title)
