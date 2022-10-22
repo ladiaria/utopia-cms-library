@@ -3,7 +3,9 @@ A book management app for utopia-cms
 
 # Features
 
-TODO: Write features
+ * Django admin ready to manage Books, Authors, Categories and Publishers
+
+TODO: complete-me
 
 # Requirements
 
