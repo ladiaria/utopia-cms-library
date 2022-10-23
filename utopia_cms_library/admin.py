@@ -41,7 +41,9 @@ class BookArticleInline(admin.TabularInline):
 
 @admin_thumbnails.thumbnail("cover_photo", _("cover photo"), append=False)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "get_authors", "year", "publisher", "cover_photo_thumbnail")
+    search_fields = ("title", "authors__name", "categories__name")
+    list_display = ("title", "get_authors", "year", "publisher", "cover_photo_thumbnail", "get_articles")
+    list_filter = ("authors", "publisher", "categories")
     exclude = ("articles", )
     inlines = [BookArticleInline]
 
@@ -50,10 +52,11 @@ class BookAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Article.published.all()
         return super(BookAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
 
+
 class BooksNewsletterForm(ModelForm):
 
     class Meta:
-        widgets = {"subject": TextInput(attrs={'size': 140}), "title": TextInput(attrs={'size': 140})}
+        widgets = {"subject": TextInput(attrs={"size": 140}), "title": TextInput(attrs={"size": 140})}
 
 
 class BooksNewsletterBlockForm(ModelForm):
@@ -71,9 +74,10 @@ class BooksNewsletterBlockInline(admin.TabularInline):
 
 
 class BooksNewsletterAdmin(admin.ModelAdmin):
-    # TODO: improve list_display and try to render the footer at the end in the change_form
     form = BooksNewsletterForm
     inlines = [BooksNewsletterBlockInline]
+    date_hierarchy = "day"
+    list_display = ("day", "subject", "title")
 
 
 class BooksNewsletterBlockRowForm(ModelForm):
@@ -91,8 +95,8 @@ class BooksNewsletterBlockRowInline(admin.TabularInline):
 
 
 class BooksNewsletterBlockContentAdmin(admin.ModelAdmin):
-    # TODO: improve list_display
     inlines = [BooksNewsletterBlockRowInline]
+    list_display = ("id", "get_books", "get_blocks")
 
 
 admin.site.register(BookAuthor, BookAuthorAdmin)

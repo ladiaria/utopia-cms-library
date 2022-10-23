@@ -57,6 +57,10 @@ class Book(models.Model):
         return ", ".join(str(a) for a in self.authors.all())
     get_authors.short_description = _("authors")
 
+    def get_articles(self):
+        return "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
+    get_articles.short_description, get_articles.allow_tags = _("articles"), True
+
     def __str__(self):
         return "%s - %s - %s, %d" % (self.title, self.get_authors(), self.publisher, self.year)
 
@@ -79,7 +83,17 @@ class BooksNewsletterBlockContent(models.Model):
     books = models.ManyToManyField(Book, through=BooksNewsletterBlockRow, verbose_name=_("books"))
 
     def __str__(self):
-        return ", ".join(str(book) for book in self.books.all())
+        return ", ".join(book.title for book in self.books.all())
+
+    def get_books(self):
+        return self.__str__()
+    get_books.short_description = _("content")
+
+    def get_blocks(self):
+        return "<br>".join(
+            "%s (%s)" % (block.newsletter, block.get_title()) for block in self.booksnewsletterblock_set.all()
+        )
+    get_blocks.short_description, get_blocks.allow_tags = _("used in"), True
 
     class Meta:
         verbose_name = _("books newsletter block content")
@@ -93,8 +107,11 @@ class BooksNewsletterBlock(models.Model):
     content = models.ForeignKey(BooksNewsletterBlockContent, verbose_name=_("content"))
     footer = MarkdownField(_("footer"), blank=True, null=True)
 
+    def get_title(self):
+        return self.title or _("no title")
+
     def __str__(self):
-        return "%s - %d %s" % (self.title or _("no title"), self.content.books.count(), _("books"))
+        return "%s - %d %s" % (self.get_title(), self.content.books.count(), _("books"))
 
     class Meta:
         verbose_name = _("books newsletter block")
