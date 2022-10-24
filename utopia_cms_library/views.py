@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from utopia_cms_library.models import Book
 
@@ -12,3 +12,8 @@ class BookList(ListView):
         if category_slug:
             queryset = queryset.filter(categories__slug=category_slug)
         return queryset
+
+
+class BookDetail(DetailView):
+    model = Book
+    query_pk_and_slug = True
