@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-23 01:21-0300\n"
+"POT-Creation-Date: 2022-10-25 02:09-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,7 +48,7 @@ msgid "author"
 msgstr "autor"
 
 #: utopia_cms_library/models.py:25 utopia_cms_library/models.py:45
-#: utopia_cms_library/models.py:58
+#: utopia_cms_library/models.py:61
 msgid "authors"
 msgstr "autores"
 
@@ -56,12 +56,12 @@ msgstr "autores"
 msgid "category"
 msgstr "categoría"
 
-#: utopia_cms_library/models.py:36 utopia_cms_library/models.py:49
+#: utopia_cms_library/models.py:36 utopia_cms_library/models.py:52
 msgid "categories"
 msgstr "categorías"
 
-#: utopia_cms_library/models.py:42 utopia_cms_library/models.py:102
-#: utopia_cms_library/models.py:120
+#: utopia_cms_library/models.py:42 utopia_cms_library/models.py:109
+#: utopia_cms_library/models.py:127
 msgid "title"
 msgstr "título"
 
@@ -74,86 +74,90 @@ msgid "description"
 msgstr "descripción"
 
 #: utopia_cms_library/models.py:50
+msgid "cover photo mobile version"
+msgstr "foto de tapa versión mobile"
+
+#: utopia_cms_library/models.py:53 utopia_cms_library/models.py:65
 msgid "articles"
 msgstr "artículos"
 
-#: utopia_cms_library/models.py:53 utopia_cms_library/models.py:67
+#: utopia_cms_library/models.py:56 utopia_cms_library/models.py:74
 msgid "book"
 msgstr "libro"
 
-#: utopia_cms_library/models.py:54 utopia_cms_library/models.py:79
-#: utopia_cms_library/models.py:110
+#: utopia_cms_library/models.py:57 utopia_cms_library/models.py:86
+#: utopia_cms_library/models.py:117
 msgid "books"
 msgstr "libros"
 
-#: utopia_cms_library/models.py:66 utopia_cms_library/models.py:101
+#: utopia_cms_library/models.py:73 utopia_cms_library/models.py:108
 msgid "order"
 msgstr "orden"
 
-#: utopia_cms_library/models.py:68
+#: utopia_cms_library/models.py:75
 msgid "text content"
 msgstr "contenido de texto"
 
-#: utopia_cms_library/models.py:74
+#: utopia_cms_library/models.py:81
 msgid "books newsletter block row"
 msgstr "fila de bloque de newsletter"
 
-#: utopia_cms_library/models.py:75
+#: utopia_cms_library/models.py:82
 msgid "books newsletter block rows"
 msgstr "filas de bloque de newsletter"
 
-#: utopia_cms_library/models.py:86 utopia_cms_library/models.py:103
+#: utopia_cms_library/models.py:93 utopia_cms_library/models.py:110
 msgid "content"
 msgstr "contenido"
 
-#: utopia_cms_library/models.py:92
+#: utopia_cms_library/models.py:99
 msgid "used in"
 msgstr "utilizado en"
 
-#: utopia_cms_library/models.py:95
+#: utopia_cms_library/models.py:102
 msgid "books newsletter block content"
 msgstr "contenido de bloque de newsletter"
 
-#: utopia_cms_library/models.py:96
+#: utopia_cms_library/models.py:103
 msgid "books newsletter block contents"
 msgstr "contenidos de bloque de newsletter"
 
-#: utopia_cms_library/models.py:100
+#: utopia_cms_library/models.py:107
 msgid "blocks"
 msgstr "bloques"
 
-#: utopia_cms_library/models.py:104 utopia_cms_library/models.py:122
+#: utopia_cms_library/models.py:111 utopia_cms_library/models.py:129
 msgid "footer"
 msgstr "pie"
 
-#: utopia_cms_library/models.py:107
+#: utopia_cms_library/models.py:114
 msgid "no title"
 msgstr "sin título"
 
-#: utopia_cms_library/models.py:113
+#: utopia_cms_library/models.py:120
 msgid "books newsletter block"
 msgstr "bloque de newsletter"
 
-#: utopia_cms_library/models.py:114
+#: utopia_cms_library/models.py:121
 msgid "books newsletter blocks"
 msgstr "bloques de newsletter"
 
-#: utopia_cms_library/models.py:118
+#: utopia_cms_library/models.py:125
 msgid "date"
 msgstr "fecha"
 
-#: utopia_cms_library/models.py:119
+#: utopia_cms_library/models.py:126
 msgid "subject"
 msgstr "asunto"
 
-#: utopia_cms_library/models.py:121
+#: utopia_cms_library/models.py:128
 msgid "header"
 msgstr "encabezado"
 
-#: utopia_cms_library/models.py:128
+#: utopia_cms_library/models.py:135
 msgid "books newsletter"
 msgstr "newsletter de libros"
 
-#: utopia_cms_library/models.py:129
+#: utopia_cms_library/models.py:136
 msgid "books newsletters"
 msgstr "newsletters de libros"

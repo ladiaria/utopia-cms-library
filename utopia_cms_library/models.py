@@ -46,6 +46,9 @@ class Book(models.Model):
     publisher = models.ForeignKey(BookPublisher, verbose_name=_("publisher"))
     description = models.TextField(_("description"), blank=True, null=True)
     cover_photo = models.ImageField(_("cover photo"), upload_to="book_covers", blank=True, null=True)
+    cover_photo_mobile = models.ImageField(
+        _("cover photo mobile version"), upload_to="book_covers", blank=True, null=True
+    )
     categories = models.ManyToManyField(BookCategory, verbose_name=_("categories"))
     articles = models.ManyToManyField(Article, verbose_name=_("articles"))
 
