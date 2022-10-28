@@ -1,5 +1,7 @@
-<ul>
+<div class="book-list">
   {% for book in object_list %}
-    <li>{{ book }}</li>
+    <div class="book-item">
+      {{ book.title }}
+    </div>
   {% endfor %}
-</ul>
+</div>
