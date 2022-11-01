@@ -5,7 +5,7 @@
         <span class="img">
           <img src="{{ MEDIA_URL }}{{ book.cover_photo }}" width="260" alt="Foto de tapa de {{ book.title }}" loading="lazy" />
         </span>
-        <span class="book-title">{{ book.title }}</span>
+        <span class="book-title">{{ book.title|truncatechars:24 }}</span>
         <span class="book-author">{{book.get_authors}}</span>
       </a>
     </div>
