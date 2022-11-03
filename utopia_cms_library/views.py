@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView
 
 from utopia_cms_library.models import Book
@@ -11,6 +12,13 @@ class BookList(ListView):
         queryset, category_slug = super().get_queryset(), self.request.GET.get('q')
         if category_slug:
             queryset = queryset.filter(categories__slug=category_slug)
+        paginator, page = Paginator(queryset, 4), self.request.GET.get('page')
+        try:
+            queryset = paginator.page(page)
+        except PageNotAnInteger:
+            queryset = paginator.page(1)
+        except (EmptyPage, InvalidPage):
+            queryset = paginator.page(paginator.num_pages)
         return queryset
 
 

@@ -1,5 +1,5 @@
 <div class="book-list">
-  {% for book in object_list %}
+  {% for book in object_list.object_list %}
     <div class="book-item">
       <a href="#{{ book.slug }}" data-bookslug="{{ book.slug }}">
         <span class="img">
@@ -10,4 +10,7 @@
       </a>
     </div>
   {% endfor %}
+  {% if object_list.has_other_pages %}
+    {% include "pagination.html" with pager=object_list page_param='page' previous_label='Anterior' next_label='Siguiente' %}
+  {% endif %}
 </div>
