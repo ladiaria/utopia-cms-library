@@ -15,7 +15,6 @@
       </svg> {{ object.publisher }} | {{ object.year }}
     </span>
     <div class="details-categories">
-      {# TODO: decidir donde nos lleva el link de categoria #}
       {% for category in object.categories.all %}
         <a href="{% url category_detail_urlname|default:'library-home' %}?q={{ category.slug }}" class="item">{{ category }}</a>
       {% endfor %}
@@ -26,18 +25,13 @@
     <div class="details-block">
       <h4 class="title">Artículos relacionados al libro</h4>
       <ul class="list">
-        {% for article in object.articles.all %}
-          <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
-        {% endfor %}
+        {% block related_articles %}
+          {% for article in object.articles.all %}
+            <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
+          {% endfor %}
+        {% endblock %}
       </ul>
     </div>
-    <div class="details-block">
-      {# TODO: preguntar sobre que contenido debe tener esto #}
-      <h4 class="title">Aportes de la comunidad sobre el libro</h4>
-      <ul class="list">
-        <li class="item"><a href="#">Entrevista al autor: título del artículo al que hace referencia</a></li>
-        <li class="item"><a href="#">Entrevista al autor: título del artículo al que hace referencia</a></li>
-      </ul>
-    </div>
+    {% block extra_content %}{% endblock %}
   </div>
 </div>
