@@ -17,3 +17,8 @@ class BookList(ListView):
 class BookDetail(DetailView):
     model = Book
     query_pk_and_slug = True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_detail_urlname'] = self.request.GET.get('category_detail_urlname')
+        return context

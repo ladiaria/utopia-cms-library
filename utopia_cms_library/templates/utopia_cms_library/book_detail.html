@@ -17,7 +17,7 @@
     <div class="details-categories">
       {# TODO: decidir donde nos lleva el link de categoria #}
       {% for category in object.categories.all %}
-        <a href="#" class="item">{{ category }}</a>
+        <a href="{% url category_detail_urlname|default:'library-home' %}?q={{ category.slug }}" class="item">{{ category }}</a>
       {% endfor %}
     </div>
     <div class="details-desc">
