@@ -11,6 +11,6 @@
     </div>
   {% endfor %}
   {% if object_list.has_other_pages %}
-    {% include "pagination.html" with pager=object_list page_param='page' previous_label='Anterior' next_label='Siguiente' %}
+    {% include "pagination.html" with extra_class='light' pager=object_list page_param='page' previous_label='Anterior' next_label='Siguiente' %}
   {% endif %}
 </div>
