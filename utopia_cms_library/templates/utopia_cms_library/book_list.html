@@ -10,7 +10,9 @@
       </a>
     </div>
   {% endfor %}
-  {% if object_list.has_other_pages %}
-    {% include "pagination.html" with extra_class='light' pager=object_list page_param='page' previous_label='Anterior' next_label='Siguiente' %}
-  {% endif %}
 </div>
+{% if object_list.has_other_pages %}
+  <div class="align-center">
+  {% include "pagination.html" with extra_class='light' pager=object_list page_param='page' previous_label='Anterior' next_label='Siguiente' %}
+  </div>
+{% endif %}
