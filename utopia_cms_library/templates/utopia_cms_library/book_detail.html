@@ -25,6 +25,8 @@
       {% block related_articles %}
         {% for article in object.articles.all %}
           <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
+        {% empty %}
+          <li>Aún no hay artículos sobre este libro.</li>
         {% endfor %}
       {% endblock %}
     </ul>
