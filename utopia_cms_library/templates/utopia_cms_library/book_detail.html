@@ -1,3 +1,5 @@
+{% load i18n markup_tags %}
+
 <div class="img">
   <img src="{{ MEDIA_URL }}{{ object.cover_photo }}" alt="Foto de tapa de {{ object.title }}" loading="lazy" width="380">
 </div>
@@ -18,15 +20,15 @@
       <a href="{% url category_detail_urlname|default:'library-home' %}?q={{ category.slug }}" class="item">{{ category }}</a>
     {% endfor %}
   </div>
-  <div class="details-desc"><p>{{ object.description }}</p></div>
+  <div class="details-desc">{{ object.description|apply_markup:"markdown" }}</div>
   <div class="details-block">
-    <h4 class="title">Artículos relacionados al libro</h4>
+    <h4 class="title">{% trans "Articles related to the book" %}</h4>
     <ul class="list">
       {% block related_articles %}
         {% for article in object.articles.all %}
           <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
         {% empty %}
-          <li>Aún no hay artículos sobre este libro.</li>
+          <li>{% trans "No articles related to this book yet" %}.</li>
         {% endfor %}
       {% endblock %}
     </ul>

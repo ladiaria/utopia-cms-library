@@ -44,7 +44,7 @@ class Book(models.Model):
     year = models.PositiveSmallIntegerField(_("year"))
     authors = models.ManyToManyField(BookAuthor, verbose_name=_("authors"))
     publisher = models.ForeignKey(BookPublisher, verbose_name=_("publisher"))
-    description = models.TextField(_("description"), blank=True, null=True)
+    description = MarkdownField(_("description"), blank=True, null=True)
     cover_photo = models.ImageField(_("cover photo"), upload_to="book_covers", blank=True, null=True)
     cover_photo_mobile = models.ImageField(
         _("cover photo mobile version"), upload_to="book_covers", blank=True, null=True

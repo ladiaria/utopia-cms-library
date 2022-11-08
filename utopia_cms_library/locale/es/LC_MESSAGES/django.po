@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-25 02:09-0300\n"
+"POT-Creation-Date: 2022-11-08 17:17-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: utopia_cms_library/admin.py:39
+#: utopia_cms_library/admin.py:40
 msgid "related articles"
 msgstr "artículos relacionados"
 
-#: utopia_cms_library/admin.py:42 utopia_cms_library/models.py:48
+#: utopia_cms_library/admin.py:43 utopia_cms_library/models.py:48
 msgid "cover photo"
 msgstr "foto de tapa"
 
@@ -161,3 +161,11 @@ msgstr "newsletter de libros"
 #: utopia_cms_library/models.py:136
 msgid "books newsletters"
 msgstr "newsletters de libros"
+
+#: utopia_cms_library/templates/utopia_cms_library/book_detail.html:25
+msgid "Articles related to the book"
+msgstr "Artículos relacionados al libro"
+
+#: utopia_cms_library/templates/utopia_cms_library/book_detail.html:31
+msgid "No articles related to this book yet"
+msgstr "Aún no hay artículos sobre este libro"
