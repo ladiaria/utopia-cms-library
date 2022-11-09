@@ -12,7 +12,7 @@ class BookList(ListView):
         queryset, category_slug = super().get_queryset(), self.request.GET.get('q')
         if category_slug:
             queryset = queryset.filter(categories__slug=category_slug)
-        paginator, page = Paginator(queryset, 4), self.request.GET.get('page')
+        paginator, page = Paginator(queryset, 16), self.request.GET.get('page')
         try:
             queryset = paginator.page(page)
         except PageNotAnInteger:

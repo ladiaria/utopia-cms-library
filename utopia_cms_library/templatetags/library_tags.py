@@ -10,7 +10,7 @@ register = Library()
 @register.simple_tag(takes_context=True)
 def book_list(context, category_slug, page):
     object_list = Book.objects.filter(categories__slug=category_slug) if category_slug else Book.objects.all()
-    paginator = Paginator(object_list, 4)
+    paginator = Paginator(object_list, 16)
     try:
         object_list = paginator.page(page)
     except PageNotAnInteger:
