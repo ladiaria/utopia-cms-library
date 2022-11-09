@@ -21,17 +21,17 @@
     {% endfor %}
   </div>
   <div class="details-desc">{{ object.description|apply_markup:"markdown" }}</div>
-  <div class="details-block">
-    <h4 class="title">{% trans "Articles related to the book" %}</h4>
-    <ul class="list">
-      {% block related_articles %}
+  {% block related_articles %}
+    <div class="details-block">
+      <h4 class="title">{% trans "Articles related to the book" %}</h4>
+      <ul class="list">
         {% for article in object.articles.all %}
           <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
         {% empty %}
           <li>{% trans "No articles related to this book yet" %}.</li>
         {% endfor %}
-      {% endblock %}
-    </ul>
-  </div>
+      </ul>
+    </div>
+  {% endblock %}
   {% block extra_content %}{% endblock %}
 </div>
