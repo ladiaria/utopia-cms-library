@@ -8,8 +8,10 @@ register = Library()
 
 
 @register.simple_tag(takes_context=True)
-def book_list(context, category_slug, page):
+def book_list(context, category_slug, page, ordering):
     object_list = Book.objects.filter(categories__slug=category_slug) if category_slug else Book.objects.all()
+    if ordering:
+        object_list = object_list.order_by(ordering)
     paginator = Paginator(object_list, 16)
     try:
         pager = paginator.page(page)
