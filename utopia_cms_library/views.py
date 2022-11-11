@@ -1,31 +1,9 @@
 from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
+from django.shortcuts import render
 
-from utopia_cms_library.models import Book
+from .models import Book
 
-
-class BookList(ListView):
-    model = Book
-
-    def get_queryset(self):
-        """ Filter the list by category slug if received in the 'q' query parameter """
-        queryset, category_slug = super().get_queryset(), self.request.GET.get('q')
-        if category_slug:
-            queryset = queryset.filter(categories__slug=category_slug)
-        paginator, page = Paginator(queryset, 16), self.request.GET.get('page')
-        try:
-            queryset = paginator.page(page)
-        except PageNotAnInteger:
-            queryset = paginator.page(1)
-        except (EmptyPage, InvalidPage):
-            queryset = paginator.page(paginator.num_pages)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        """ Keep the query by category (if any) to use it in the paginator links """
-        context = super().get_context_data(**kwargs)
-        context['book_category_slug'] = self.request.GET.get('q')
-        return context
 
 class BookDetail(DetailView):
     model = Book
@@ -35,3 +13,23 @@ class BookDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['category_detail_urlname'] = self.request.GET.get('category_detail_urlname')
         return context
+
+
+def book_list(request):
+    # Filter the list by category slug if received in the 'q' query parameter
+    queryset, category_slug = Book.objects.all(), request.GET.get('q')
+    if category_slug:
+        context = {"book_category_slug": category_slug}
+        queryset = queryset.filter(categories__slug=category_slug)
+
+    # Paginate and keep the query by category (if any) to use it in the paginator links
+    paginator, page = Paginator(queryset, 16), request.GET.get('page')
+    try:
+        pager = paginator.page(page)
+    except PageNotAnInteger:
+        pager = paginator.page(1)
+    except (EmptyPage, InvalidPage):
+        pager = paginator.page(paginator.num_pages)
+    context["pager"] = pager
+
+    return render(request, "utopia_cms_library/book_list.html", context)
