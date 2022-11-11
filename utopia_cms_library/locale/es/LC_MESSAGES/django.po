@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-08 17:17-0300\n"
+"POT-Creation-Date: 2022-11-11 10:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -122,10 +122,6 @@ msgstr "contenido de bloque de newsletter"
 msgid "books newsletter block contents"
 msgstr "contenidos de bloque de newsletter"
 
-#: utopia_cms_library/models.py:107
-msgid "blocks"
-msgstr "bloques"
-
 #: utopia_cms_library/models.py:111 utopia_cms_library/models.py:129
 msgid "footer"
 msgstr "pie"
@@ -162,7 +158,7 @@ msgstr "newsletter de libros"
 msgid "books newsletters"
 msgstr "newsletters de libros"
 
-#: utopia_cms_library/templates/utopia_cms_library/book_detail.html:25
+#: utopia_cms_library/templates/utopia_cms_library/book_detail.html:26
 msgid "Articles related to the book"
 msgstr "Artículos relacionados al libro"
 

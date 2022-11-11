@@ -33,6 +33,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='booksnewsletterblock',
             name='newsletter',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bloques', to='utopia_cms_library.BooksNewsletter'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blocks', to='utopia_cms_library.BooksNewsletter'),
         ),
     ]

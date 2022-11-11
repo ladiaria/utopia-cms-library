@@ -98,13 +98,16 @@ class BooksNewsletterBlockContent(models.Model):
         )
     get_blocks.short_description, get_blocks.allow_tags = _("used in"), True
 
+    def get_rows(self):
+        return self.booksnewsletterblockrow_set.order_by("order")
+
     class Meta:
         verbose_name = _("books newsletter block content")
         verbose_name_plural = _("books newsletter block contents")
 
 
 class BooksNewsletterBlock(models.Model):
-    newsletter = models.ForeignKey("BooksNewsletter", related_name=_("blocks"))
+    newsletter = models.ForeignKey("BooksNewsletter", related_name="blocks")
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     title = models.CharField(_("title"), max_length=255, blank=True, null=True)
     content = models.ForeignKey(BooksNewsletterBlockContent, verbose_name=_("content"))
@@ -130,6 +133,9 @@ class BooksNewsletter(models.Model):
 
     def __str__(self):
         return "%s: %s" % (self.day, self.title)
+
+    def blocks_ordered(self):
+        return self.blocks.order_by("order")
 
     class Meta:
         verbose_name = _("books newsletter")
