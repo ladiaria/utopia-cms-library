@@ -21,6 +21,11 @@ class BookList(ListView):
             queryset = paginator.page(paginator.num_pages)
         return queryset
 
+    def get_context_data(self, **kwargs):
+        """ Keep the query by category (if any) to use it in the paginator links """
+        context = super().get_context_data(**kwargs)
+        context['book_category_slug'] = self.request.GET.get('q')
+        return context
 
 class BookDetail(DetailView):
     model = Book
