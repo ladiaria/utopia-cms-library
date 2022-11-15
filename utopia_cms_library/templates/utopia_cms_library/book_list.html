@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <div class="book-list">
   {% for book in pager.object_list %}
     <div class="book-item">
@@ -13,6 +15,6 @@
 </div>
 {% if pager.has_other_pages %}
   <div class="align-center pagination-container">
-    {% include "pagination.html" with extra_class='light' page_param='page' token=book_category_slug previous_label='Anterior' next_label='Siguiente' %}
+    {% include "pagination.html" with extra_class='light' page_param='page' token=book_category_slug previous_label=_('Previous') next_label=_('Next page') %}
   </div>
 {% endif %}
