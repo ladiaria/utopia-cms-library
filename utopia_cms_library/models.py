@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from core.models import Article
 
+
 class BookPublisher(models.Model):
     name = models.CharField(_("name"), max_length=64, unique=True)
 
@@ -16,6 +17,7 @@ class BookPublisher(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class BookAuthor(models.Model):
     name = models.CharField(_("name"), max_length=64, unique=True)
@@ -27,6 +29,7 @@ class BookAuthor(models.Model):
     def __str__(self):
         return self.name
 
+
 class BookCategory(models.Model):
     name = models.CharField(_("name"), max_length=64, unique=True)
     slug = AutoSlugField(populate_from="name", always_update=True, null=True, blank=True)
@@ -37,6 +40,7 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Book(models.Model):
     title = models.CharField(_("title"), max_length=255, unique=True)
@@ -63,6 +67,22 @@ class Book(models.Model):
     def get_articles(self):
         return "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
     get_articles.short_description, get_articles.allow_tags = _("articles"), True
+
+    def get_categories(self):
+        return ", ".join(str(c) for c in self.categories.all())
+    get_authors.short_description = _("categories")
+
+    def publisher_index(self):
+        return self.publisher.name if self.publisher else ''
+
+    def authors_index(self):
+        return self.get_authors() if self.authors else ''
+
+    def categories_index(self):
+        return self.get_categories() if self.categories else ''
+
+    def description_index(self):
+        return str(self.description)
 
     def __str__(self):
         return "%s - %s - %s, %d" % (self.title, self.get_authors(), self.publisher, self.year)
