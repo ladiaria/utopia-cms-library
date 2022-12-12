@@ -1,4 +1,4 @@
-{% load i18n markup_tags %}
+{% load i18n markup_tags bleach_tags ldml %}
 
 <div class="img">
   <img src="{{ MEDIA_URL }}{{ object.cover_photo }}" alt="Foto de tapa de {{ object.title }}" loading="lazy" width="380">
@@ -26,7 +26,7 @@
       <h4 class="title">{% trans "Articles related to the book" %}</h4>
       <ul class="list">
         {% for article in object.articles.all %}
-          <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></li>
+          <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline|ldmarkup|bleach }}</a></li>
         {% empty %}
           <li>{% trans "No articles related to this book yet" %}.</li>
         {% endfor %}
