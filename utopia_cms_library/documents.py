@@ -5,8 +5,7 @@ from builtins import object
 from django.conf import settings
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-
-from models import Book
+from utopia_cms_library.models import Book
 
 
 @registry.register_document
