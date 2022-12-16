@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from builtins import object
 
+from django_markup.templatetags.markup_tags import apply_markup
+
 from django.conf import settings
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
@@ -17,18 +19,22 @@ class BookDocument(Document):
         # See Elasticsearch Indices API reference for available settings
         settings = {'number_of_shards': 1, 'number_of_replicas': 0}
 
-    publisher = fields.TextField(attr="publisher_index")
-    authors = fields.TextField(attr="get_authors")
-    categories = fields.TextField(attr="get_categories")
+    year = fields.TextField(attr="year")
+    authors = fields.NestedField(properties={"name": fields.TextField()})
+    publisher = fields.ObjectField(properties={"name": fields.TextField()})
     description = fields.TextField(attr="description")
+    categories = fields.NestedField(properties={"name": fields.TextField()})
+    # used to match exact name when filtering by category
+    categories_filter = fields.NestedField(attr="categories", properties={"name": fields.KeywordField()})
+
+    def prepare_description(self, instance):
+        return apply_markup(instance.description, "markdown")
 
     class Django(object):
         model = Book  # The model associated with this Document
 
         # The fields of the model you want to be indexed in Elasticsearch
-        fields = [
-            'title',
-        ]
+        fields = ['title']
 
         # To ignore auto updating of Elasticsearch index when a model is saved or deleted, use:
         # ignore_signals = True
