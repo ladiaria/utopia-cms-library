@@ -1,7 +1,7 @@
 from elasticsearch_dsl import Q
 from elasticsearch_dsl.query import Nested
 
-from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
+from django.conf import settings
 from django.views.generic import DetailView
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
@@ -22,20 +22,21 @@ class BookDetail(DetailView):
         return context
 
 
-def book_list(request):
-    # Filter the list by category slug and search query if received in the 'q' and 's' query parameters
-    category_slug, search_query, context = request.GET.get('q'), request.GET.get('s', ""), {}
-
-    if category_slug:
-        context["book_category_slug"] = category_slug
+def search(search_query, category_slug, page, ordering=""):
+    """
+    @returns A tuple with 4 items:
+             - the sanitized search query
+             - the page results (if elastic was used to search)
+             - the pager object
+             - an error message if any error was detected
+    """
+    page_results, error = None, ""
 
     if search_query:
         search_query = ''.join(dre.findall(search_query))
 
     if search_query and len(search_query) > 2:
-        context["search_query"] = search_query
 
-        # TODO [WIP]: search using django/elastic(if configured)
         if settings.ELASTICSEARCH_DSL:
 
             extra_kwargs = {}
@@ -68,46 +69,46 @@ def book_list(request):
                     ],
                 )
             )
-
+            if ordering:
+                s = s.sort(ordering)
             try:
                 r = s.execute()
                 total = r.hits.total.value
                 # ES hits cannot be paginated with the same django Paginator class, we need to take the results
                 # for the page and simulate the dajngo pagination using a simple range list.
-                page_results, matches_query = _page_results(request, s, total, 16, "page"), list(range(total))
+                page_results, matches_query = _page_results(page, s, total, 16), list(range(total))
             except Exception as exc:
                 if settings.DEBUG:
                     print("search error: %s" % exc)
-                # TODO: load error in context someway, for example as an error form:
-                # search_form.add_error('s', _('Search is not possible at this time.'))
-            cont, elastic_search = len(matches_query), True
+                matches_query, error = None, _('Search is not possible at this time.')
 
         else:
             matches_query = Book.objects
             if category_slug:
                 matches_query = matches_query.filter(categories__slug=category_slug)
-            # TODO: uncomment and fix this lines
-            # matches_query = matches_query.filter(get_query(search_query, ['title', ...]))
-            # cont = matches_query.count()
+            matches_query = matches_query.filter(
+                get_query(
+                    search_query,
+                    ['title', 'year', 'publisher__name', 'description', 'authors__name', 'categories__name'],
+                )
+            ).distinct()
+            if ordering:
+                matches_query = matches_query.order_by(ordering)
 
     else:
-        matches_query = Book.objects
+        matches_query = Book.objects.all()
         if category_slug:
             matches_query = matches_query.filter(categories__slug=category_slug)
+        if ordering:
+            matches_query = matches_query.order_by(ordering)
 
-    # Paginate and keep the query by category (if any) to use it in the paginator links
-    # TODO [WIP]: should be migrated like search.views
-    pager = _paginate(request, matches_query, 16, "page")
-    """
-    paginator, page = Paginator(queryset, 16), request.GET.get('page')
-    try:
-        pager = paginator.page(page)
-    except PageNotAnInteger:
-        pager = paginator.page(1)
-    except (EmptyPage, InvalidPage):
-        pager = paginator.page(paginator.num_pages)
-    """
-    context["pager"] = pager
+    return (search_query, page_results, matches_query and _paginate(page, matches_query, 16), error)
 
 
+def book_list(request):
+    # Filter the list by category slug and search query if received in the 'q' and 's' query parameters
+    category_slug, search_query, page = request.GET.get('q'), request.GET.get('s', ""), request.GET.get("page")
+    context = {"book_category_slug": category_slug} if category_slug else {}
+    search_query, page_results, pager, error = search(search_query, category_slug, page)
+    context.update({"search_query": search_query, "page_results": page_results, "pager": pager, "error": error})
     return render(request, "utopia_cms_library/book_list.html", context)
