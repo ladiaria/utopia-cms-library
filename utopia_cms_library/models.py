@@ -56,6 +56,10 @@ class Book(models.Model):
         verbose_name = _("book")
         verbose_name_plural = _("books")
 
+    def get_absolute_url(self):
+        # TODO: wip
+        return "%s/#%s" % ("", self.slug)
+
     def get_authors(self):
         return ", ".join(str(a) for a in self.authors.all())
     get_authors.short_description = _("authors")
