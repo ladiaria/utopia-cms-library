@@ -7,6 +7,6 @@ from .sitemaps import BookSitemap
 
 urlpatterns = [
     url(r'^$', book_list, name="library-home"),
-    url(r'^(?P<slug>[-\w]+)/$', BookDetail.as_view()),
+    url(r'^(?P<slug>[-\w]+)/$', BookDetail.as_view(), name="library-book-detail"),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': {"book": BookSitemap}}, name='library-book-sitemap'),
 ]
