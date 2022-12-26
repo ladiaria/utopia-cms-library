@@ -1,11 +1,15 @@
 from autoslug.fields import AutoSlugField
 from django_markdown.models import MarkdownField
+from pydoc import locate
 
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import Article
+
+from .apps import UtopiaCmsLibraryConfig as library_settings
 
 
 class BookPublisher(models.Model):
@@ -59,6 +63,10 @@ class Book(models.Model):
     class Meta:
         verbose_name = _("book")
         verbose_name_plural = _("books")
+
+    def get_absolute_url(self):
+        func = library_settings.BOOK_URL_FUNCTION
+        return locate(func)(self) if func else reverse("library-book-detail", kwargs={"slug": self.slug})
 
     def get_authors(self):
         return ", ".join(str(a) for a in self.authors.all())
