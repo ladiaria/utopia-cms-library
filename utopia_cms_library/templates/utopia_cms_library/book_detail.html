@@ -1,5 +1,7 @@
 {% load i18n markup_tags bleach_tags ldml %}
 
+{% block header %}{% endblock %}
+
 <div class="img">
   <img src="{{ MEDIA_URL }}{{ object.cover_photo }}" alt="Foto de tapa de {{ object.title }}" loading="lazy" width="380">
 </div>
@@ -35,3 +37,5 @@
   {% endblock %}
   {% block extra_content %}{% endblock %}
 </div>
+
+{% block footer %}{% endblock %}
