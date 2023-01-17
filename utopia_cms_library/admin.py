@@ -19,14 +19,17 @@ from utopia_cms_library.models import (
 )
 
 
+@admin.register(BookAuthor)
 class BookAuthorAdmin(admin.ModelAdmin):
     list_display = ("name", )
 
 
+@admin.register(BookPublisher)
 class BookPublisherAdmin(admin.ModelAdmin):
     list_display = ("name", )
 
 
+@admin.register(BookCategory)
 class BookCategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "slug")
     list_editable = ("name", )
@@ -40,6 +43,7 @@ class BookArticleInline(admin.TabularInline):
     verbose_name_plural = _("related articles")
 
 
+@admin.register(Book)
 @admin_thumbnails.thumbnail("cover_photo", _("cover photo"), append=False)
 class BookAdmin(admin.ModelAdmin):
     search_fields = ("title", "authors__name", "categories__name")
@@ -76,6 +80,7 @@ class BooksNewsletterBlockInline(admin.TabularInline):
     raw_id_fields = ("content", )
 
 
+@admin.register(BooksNewsletter)
 class BooksNewsletterAdmin(admin.ModelAdmin):
     form = BooksNewsletterForm
     inlines = [BooksNewsletterBlockInline]
@@ -97,14 +102,9 @@ class BooksNewsletterBlockRowInline(admin.TabularInline):
     raw_id_fields = ("book", )
 
 
+@admin.register(BooksNewsletterBlockContent)
 class BooksNewsletterBlockContentAdmin(admin.ModelAdmin):
     inlines = [BooksNewsletterBlockRowInline]
     list_display = ("id", "get_books", "get_blocks")
 
 
-admin.site.register(BookAuthor, BookAuthorAdmin)
-admin.site.register(BookPublisher, BookPublisherAdmin)
-admin.site.register(BookCategory, BookCategoryAdmin)
-admin.site.register(Book, BookAdmin)
-admin.site.register(BooksNewsletter, BooksNewsletterAdmin)
-admin.site.register(BooksNewsletterBlockContent, BooksNewsletterBlockContentAdmin)
