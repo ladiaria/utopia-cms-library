@@ -1,5 +1,5 @@
 from autoslug.fields import AutoSlugField
-from django_markdown.models import MarkdownField
+from martor.models import MartorField
 from pydoc import locate
 
 from django.db import models
@@ -52,7 +52,7 @@ class Book(models.Model):
     year = models.PositiveSmallIntegerField(_("year"))
     authors = models.ManyToManyField(BookAuthor, verbose_name=_("authors"))
     publisher = models.ForeignKey(BookPublisher, on_delete=models.CASCADE, verbose_name=_("publisher"))
-    description = MarkdownField(_("description"), blank=True, null=True)
+    description = MartorField(_("description"), blank=True, null=True)
     cover_photo = models.ImageField(_("cover photo"), upload_to="book_covers", blank=True, null=True)
     cover_photo_mobile = models.ImageField(
         _("cover photo mobile version"), upload_to="book_covers", blank=True, null=True
@@ -86,7 +86,7 @@ class BooksNewsletterBlockRow(models.Model):
     block = models.ForeignKey("BooksNewsletterBlockContent", on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name=_("book"))
-    text_content = MarkdownField(_("text content"), blank=True, null=True)
+    text_content = MartorField(_("text content"), blank=True, null=True)
 
     def __str__(self):
         return str(self.book)
@@ -127,7 +127,7 @@ class BooksNewsletterBlock(models.Model):
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     title = models.CharField(_("title"), max_length=255, blank=True, null=True)
     content = models.ForeignKey(BooksNewsletterBlockContent, on_delete=models.CASCADE, verbose_name=_("content"))
-    footer = MarkdownField(_("footer"), blank=True, null=True)
+    footer = MartorField(_("footer"), blank=True, null=True)
 
     def get_title(self):
         return self.title or _("no title")
@@ -144,8 +144,8 @@ class BooksNewsletter(models.Model):
     day = models.DateField(_("date"), unique=True, default=timezone.now)
     subject = models.CharField(_("subject"), max_length=255)
     title = models.CharField(_("title"), max_length=255)
-    header = MarkdownField(_("header"), blank=True, null=True)
-    footer = MarkdownField(_("footer"), blank=True, null=True)
+    header = MartorField(_("header"), blank=True, null=True)
+    footer = MartorField(_("footer"), blank=True, null=True)
 
     def __str__(self):
         return "%s: %s" % (self.day, self.title)

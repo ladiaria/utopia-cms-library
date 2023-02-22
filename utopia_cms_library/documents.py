@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from builtins import object
 
-from django_markup.templatetags.markup_tags import apply_markup
+from martor.templatetags.martortags import safe_markdown
 
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
@@ -31,7 +31,7 @@ class BookDocument(Document):
     get_authors = fields.TextField(attr="get_authors")
 
     def prepare_description(self, instance):
-        return apply_markup(instance.description, "markdown")
+        return safemarkdown(instance.description)
 
     class Django(object):
         model = Book  # The model associated with this Document

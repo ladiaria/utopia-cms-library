@@ -1,4 +1,4 @@
-{% load i18n markup_tags bleach_tags ldml %}
+{% load i18n martortags bleach_tags ldml %}
 
 {% block header %}{% endblock %}
 
@@ -22,7 +22,7 @@
       <a href="{% url category_detail_urlname|default:'library-home' %}?q={{ category.slug }}" class="item">{{ category }}</a>
     {% endfor %}
   </div>
-  <div class="details-desc">{{ object.description|apply_markup:"markdown" }}</div>
+  <div class="details-desc">{{ object.description|safe_markdown }}</div>
   {% block related_articles %}
     <div class="details-block">
       <h4 class="title">{% trans "Articles related to the book" %}</h4>
