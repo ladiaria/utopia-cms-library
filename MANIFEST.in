@@ -1,2 +1,3 @@
 recursive-include utopia_cms_library/locale *
+recursive-include utopia_cms_library/static *
 recursive-include utopia_cms_library/templates *
