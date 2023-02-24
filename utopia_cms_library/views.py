@@ -47,7 +47,6 @@ def search(search_query, category_slug, page, ordering=""):
             elif settings.SEARCH_ELASTIC_USE_FUZZY:
                 extra_kwargs['fuzziness'] = 'auto'
 
-            print(1)##
             s = BookDocument.search()
             if category_slug:
                 s = s.filter(
@@ -56,7 +55,6 @@ def search(search_query, category_slug, page, ordering=""):
                         query=Q("match", categories_filter__name=BookCategory.objects.get(slug=category_slug).name),
                     )
                 )
-            print(2)##
             s = s.query(
                 Q(
                     "bool",
@@ -72,19 +70,14 @@ def search(search_query, category_slug, page, ordering=""):
                     ],
                 )
             )
-            print(3)##
             if ordering:
                 s = s.sort(ordering)
-            print(4)##
             try:
                 r = s.execute()
-                print(4.1)##
                 total = r.hits.total.value
                 # ES hits cannot be paginated with the same django Paginator class, we need to take the results
                 # for the page and simulate the dajngo pagination using a simple range list.
-                print(4.2)##
                 page_results, matches_query = _page_results(page, s, total, 16), list(range(total))
-                print(4.3)##
             except Exception as exc:
                 if settings.DEBUG:
                     print("search error: %s" % exc)

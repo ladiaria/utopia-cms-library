@@ -26,9 +26,6 @@ class BookDocument(Document):
     slug = fields.TextField(attr="slug")
     get_authors = fields.TextField(attr="get_authors")
 
-    def prepare_year(self, instance):
-        return str(instance.year)
-
     def prepare_description(self, instance):
         return safe_markdown(instance.description)
 
