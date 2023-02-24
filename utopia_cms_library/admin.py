@@ -54,11 +54,6 @@ class BookAdmin(admin.ModelAdmin):
     )
     inlines = [BookArticleInline]
 
-    def get_form(self, request, obj=None, change=False, **kwargs):
-        form = super(BookAdmin, self).get_form(request, obj, change, **kwargs)
-        form.base_fields["description"].label = Book._meta.get_field("description").verbose_name.title()
-        return form
-
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "articles":
             kwargs["queryset"] = Article.published.all()
@@ -95,6 +90,9 @@ class BooksNewsletterAdmin(admin.ModelAdmin):
     date_hierarchy = "day"
     list_display = ("day", "subject", "title")
 
+    class Media:
+        css = {'all': ('css/admin_booksnewsletter.css', )}
+
 
 class BooksNewsletterBlockRowForm(ModelForm):
 
@@ -115,4 +113,5 @@ class BooksNewsletterBlockContentAdmin(admin.ModelAdmin):
     inlines = [BooksNewsletterBlockRowInline]
     list_display = ("id", "get_books", "get_blocks")
 
-
+    class Media:
+        css = {'all': ('css/admin_booksnewsletterblockcontent.css', )}
