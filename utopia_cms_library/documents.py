@@ -1,7 +1,3 @@
-from __future__ import unicode_literals
-
-from builtins import object
-
 from martor.templatetags.martortags import safe_markdown
 
 from django_elasticsearch_dsl import Document, fields
@@ -13,7 +9,7 @@ from .models import Book
 
 @registry.register_document
 class BookDocument(Document):
-    class Index(object):
+    class Index:
         name = library_settings.SEARCH_ELASTIC_INDEX_NAME
         # See Elasticsearch Indices API reference for available settings
         settings = {'number_of_shards': 1, 'number_of_replicas': 0}
@@ -30,10 +26,13 @@ class BookDocument(Document):
     slug = fields.TextField(attr="slug")
     get_authors = fields.TextField(attr="get_authors")
 
-    def prepare_description(self, instance):
-        return safemarkdown(instance.description)
+    def prepare_year(self, instance):
+        return str(instance.year)
 
-    class Django(object):
+    def prepare_description(self, instance):
+        return safe_markdown(instance.description)
+
+    class Django:
         model = Book  # The model associated with this Document
 
         # The fields of the model you want to be indexed in Elasticsearch
