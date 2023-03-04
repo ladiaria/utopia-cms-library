@@ -6,6 +6,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 from core.models import Article
 
@@ -74,9 +75,11 @@ class Book(models.Model):
     get_authors.short_description = _("authors")
 
     def get_articles(self):
-        return "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
+        return mark_safe(
+            "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
+        )
 
-    get_articles.short_description, get_articles.allow_tags = _("articles"), True
+    get_articles.short_description = _("articles")
 
     def __str__(self):
         return "%s - %s - %s, %d" % (self.title, self.get_authors(), self.publisher, self.year)
@@ -108,11 +111,13 @@ class BooksNewsletterBlockContent(models.Model):
     get_books.short_description = _("content")
 
     def get_blocks(self):
-        return "<br>".join(
-            "%s (%s)" % (block.newsletter, block.get_title()) for block in self.booksnewsletterblock_set.all()
+        return mark_safe(
+            "<br>".join(
+                "%s (%s)" % (block.newsletter, block.get_title()) for block in self.booksnewsletterblock_set.all()
+            )
         )
 
-    get_blocks.short_description, get_blocks.allow_tags = _("used in"), True
+    get_blocks.short_description = _("used in")
 
     def get_rows(self):
         return self.booksnewsletterblockrow_set.order_by("order")
