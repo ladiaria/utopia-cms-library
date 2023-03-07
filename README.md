@@ -1,12 +1,10 @@
 # utopia-cms-library
-A book management app for utopia-cms
+A book management app for utopia-cms.
 
 # Features
 
  * Django admin ready to manage Books, Authors, Categories and Publishers.
  * Elasticsearch indexing support.
-
-TODO: complete-me
 
 # Requirements
 
