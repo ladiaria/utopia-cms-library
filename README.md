@@ -13,4 +13,3 @@ A book management app for utopia-cms.
 # Installation
 
 TODO: Write installation instructions
-
