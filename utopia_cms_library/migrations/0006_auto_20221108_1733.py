@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-import django_markdown.models
+import martor.models
 
 
 class Migration(migrations.Migration):
@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='book',
             name='description',
-            field=django_markdown.models.MarkdownField(blank=True, null=True, verbose_name='description'),
+            field=martor.models.MartorField(blank=True, null=True, verbose_name='description'),
         ),
     ]

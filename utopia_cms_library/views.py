@@ -12,6 +12,7 @@ from search.views import dre, _paginate, _page_results
 from .models import Book, BookCategory
 from .documents import BookDocument
 
+
 class BookDetail(DetailView):
     model = Book
     query_pk_and_slug = True

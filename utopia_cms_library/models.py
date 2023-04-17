@@ -1,11 +1,12 @@
 from autoslug.fields import AutoSlugField
-from django_markdown.models import MarkdownField
+from martor.models import MartorField
 from pydoc import locate
 
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.safestring import mark_safe
 
 from core.models import Article
 
@@ -51,8 +52,8 @@ class Book(models.Model):
     slug = AutoSlugField(populate_from="title", always_update=True, null=True, blank=True)
     year = models.PositiveSmallIntegerField(_("year"))
     authors = models.ManyToManyField(BookAuthor, verbose_name=_("authors"))
-    publisher = models.ForeignKey(BookPublisher, verbose_name=_("publisher"))
-    description = MarkdownField(_("description"), blank=True, null=True)
+    publisher = models.ForeignKey(BookPublisher, on_delete=models.CASCADE, verbose_name=_("publisher"))
+    description = MartorField(_("description"), blank=True, null=True)
     cover_photo = models.ImageField(_("cover photo"), upload_to="book_covers", blank=True, null=True)
     cover_photo_mobile = models.ImageField(
         _("cover photo mobile version"), upload_to="book_covers", blank=True, null=True
@@ -70,21 +71,25 @@ class Book(models.Model):
 
     def get_authors(self):
         return ", ".join(str(a) for a in self.authors.all())
+
     get_authors.short_description = _("authors")
 
     def get_articles(self):
-        return "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
-    get_articles.short_description, get_articles.allow_tags = _("articles"), True
+        return mark_safe(
+            "<br>".join('<a href="%s">%s</a>' % (a.get_absolute_url(), a.id) for a in self.articles.all())
+        )
+
+    get_articles.short_description = _("articles")
 
     def __str__(self):
         return "%s - %s - %s, %d" % (self.title, self.get_authors(), self.publisher, self.year)
 
 
 class BooksNewsletterBlockRow(models.Model):
-    block = models.ForeignKey("BooksNewsletterBlockContent")
+    block = models.ForeignKey("BooksNewsletterBlockContent", on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
-    book = models.ForeignKey(Book, verbose_name=_("book"))
-    text_content = MarkdownField(_("text content"), blank=True, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, verbose_name=_("book"))
+    text_content = MartorField(_("text content"), blank=True, null=True)
 
     def __str__(self):
         return str(self.book)
@@ -102,13 +107,17 @@ class BooksNewsletterBlockContent(models.Model):
 
     def get_books(self):
         return self.__str__()
+
     get_books.short_description = _("content")
 
     def get_blocks(self):
-        return "<br>".join(
-            "%s (%s)" % (block.newsletter, block.get_title()) for block in self.booksnewsletterblock_set.all()
+        return mark_safe(
+            "<br>".join(
+                "%s (%s)" % (block.newsletter, block.get_title()) for block in self.booksnewsletterblock_set.all()
+            )
         )
-    get_blocks.short_description, get_blocks.allow_tags = _("used in"), True
+
+    get_blocks.short_description = _("used in")
 
     def get_rows(self):
         return self.booksnewsletterblockrow_set.order_by("order")
@@ -119,11 +128,11 @@ class BooksNewsletterBlockContent(models.Model):
 
 
 class BooksNewsletterBlock(models.Model):
-    newsletter = models.ForeignKey("BooksNewsletter", related_name="blocks")
+    newsletter = models.ForeignKey("BooksNewsletter", on_delete=models.CASCADE, related_name="blocks")
     order = models.PositiveSmallIntegerField(_("order"), null=True, blank=True)
     title = models.CharField(_("title"), max_length=255, blank=True, null=True)
-    content = models.ForeignKey(BooksNewsletterBlockContent, verbose_name=_("content"))
-    footer = MarkdownField(_("footer"), blank=True, null=True)
+    content = models.ForeignKey(BooksNewsletterBlockContent, on_delete=models.CASCADE, verbose_name=_("content"))
+    footer = MartorField(_("footer"), blank=True, null=True)
 
     def get_title(self):
         return self.title or _("no title")
@@ -140,8 +149,8 @@ class BooksNewsletter(models.Model):
     day = models.DateField(_("date"), unique=True, default=timezone.now)
     subject = models.CharField(_("subject"), max_length=255)
     title = models.CharField(_("title"), max_length=255)
-    header = MarkdownField(_("header"), blank=True, null=True)
-    footer = MarkdownField(_("footer"), blank=True, null=True)
+    header = MartorField(_("header"), blank=True, null=True)
+    footer = MartorField(_("footer"), blank=True, null=True)
 
     def __str__(self):
         return "%s: %s" % (self.day, self.title)
@@ -152,5 +161,5 @@ class BooksNewsletter(models.Model):
     class Meta:
         verbose_name = _("books newsletter")
         verbose_name_plural = _("books newsletters")
-        ordering = ("-day", )
+        ordering = ("-day",)
         get_latest_by = "day"
