@@ -1,2 +1,2 @@
-django-admin-thumbnails==0.2.6
-django-autoslug==1.9.8
+django-admin-thumbnails>0.2.6
+django-autoslug>1.9.8
