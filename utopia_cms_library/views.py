@@ -111,5 +111,13 @@ def book_list(request):
     category_slug, search_query, page = request.GET.get('q'), request.GET.get('s', ""), request.GET.get("page")
     context = {"book_category_slug": category_slug} if category_slug else {}
     search_query, page_results, pager, error = search(search_query, category_slug, page)
-    context.update({"search_query": search_query, "page_results": page_results, "pager": pager, "error": error})
+    context.update(
+        {
+            "search_query": search_query,
+            "page_results": page_results,
+            "pager": pager,
+            "pager_object_list": getattr(pager, "object_list", []),
+            "error": error,
+        }
+    )
     return render(request, "utopia_cms_library/book_list.html", context)

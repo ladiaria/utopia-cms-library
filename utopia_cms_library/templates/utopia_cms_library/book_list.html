@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div class="book-list">
-  {% for book in page_results|default:pager.object_list %}
+  {% for book in page_results|default:pager_object_list %}
     <div class="book-item">
       <a name="{{ book.slug }}" href="#{{ book.slug }}" data-bookslug="{{ book.slug }}">
         <span class="img">
