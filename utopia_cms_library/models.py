@@ -49,7 +49,7 @@ class BookCategory(models.Model):
 
 class Book(models.Model):
     title = models.CharField(_("title"), max_length=255, unique=True)
-    slug = AutoSlugField(populate_from="title", always_update=True, null=True, blank=True)
+    slug = AutoSlugField(populate_from="title", always_update=True, null=True, blank=True, max_length=255, unique=True)
     year = models.PositiveSmallIntegerField(_("year"))
     authors = models.ManyToManyField(BookAuthor, verbose_name=_("authors"))
     publisher = models.ForeignKey(BookPublisher, on_delete=models.CASCADE, verbose_name=_("publisher"))
