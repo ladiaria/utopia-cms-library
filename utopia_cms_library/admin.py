@@ -4,7 +4,7 @@ from django.conf import settings
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from core.models import Article
 from utopia_cms_library.models import (

@@ -4,7 +4,7 @@ from elasticsearch_dsl.query import Nested
 from django.conf import settings
 from django.views.generic import DetailView
 from django.shortcuts import render
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from search.models import get_query
 from search.views import dre, _paginate, _page_results
