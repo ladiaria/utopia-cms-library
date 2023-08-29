@@ -1,5 +1,7 @@
 import admin_thumbnails
 
+from martor.models import MartorField
+
 from django.conf import settings
 from django.forms import ModelForm
 from django.forms.widgets import TextInput
@@ -7,6 +9,8 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from core.models import Article
+from core.admin import UtopiaCmsAdminMartorWidget
+
 from utopia_cms_library.models import (
     BookAuthor,
     BookPublisher,
@@ -53,6 +57,7 @@ class BookAdmin(admin.ModelAdmin):
         ("cover_photo_mobile", ) if getattr(settings, "UTOPIA_CMS_LIBRARY_EXCLUDE_COVER_PHOTO_MOBILE", False) else ()
     )
     inlines = [BookArticleInline]
+    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "articles":
@@ -81,6 +86,7 @@ class BooksNewsletterBlockInline(admin.TabularInline):
     model = BooksNewsletterBlock
     form = BooksNewsletterBlockForm
     raw_id_fields = ("content", )
+    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
 
 
 @admin.register(BooksNewsletter)
@@ -89,6 +95,7 @@ class BooksNewsletterAdmin(admin.ModelAdmin):
     inlines = [BooksNewsletterBlockInline]
     date_hierarchy = "day"
     list_display = ("day", "subject", "title")
+    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
 
     class Media:
         css = {'all': ('css/admin_booksnewsletter.css', )}
@@ -105,6 +112,7 @@ class BooksNewsletterBlockRowForm(ModelForm):
 class BooksNewsletterBlockRowInline(admin.TabularInline):
     model = BooksNewsletterBlockContent.books.through
     form = BooksNewsletterBlockRowForm
+    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
     raw_id_fields = ("book", )
 
 
