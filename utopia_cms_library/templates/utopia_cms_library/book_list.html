@@ -1,45 +1,30 @@
 {% load i18n %}
 
 <div class="book-list">
-  {% for book in page_results|default:pager_object_list %}
-    <div class="book-item">
-      <a name="{{ book.slug }}" href="#{{ book.slug }}" data-bookslug="{{ book.slug }}">
-        {% for category in book.categories.all %}
-          {% if category.slug == 'biblioteca-pais' %}
-            <!-- Badge biblioteca pais -->
-            <svg class="badge" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <g clip-path="url(#clip0_1473_852)">
-                <circle cx="12" cy="12" r="11.5" fill="#27AE60" stroke="#2D9F5D"/>
-                <path d="M15.9838 10.138C15.9756 10.1103 15.9647 10.0836 15.9513 10.0581L15.9338 10.0306L15.9089 9.99316L15.8889 9.9682L15.8639 9.94573L15.829 9.91827H15.8165L15.789 9.9008C15.7633 9.88785 15.7366 9.877 15.7092 9.86834H15.6967C15.6546 9.85526 15.6109 9.84852 15.5669 9.84837H10.5192C10.1551 9.84837 9.80582 9.70371 9.54833 9.44622C9.29084 9.18874 9.14619 8.83951 9.14619 8.47536C9.14619 8.11122 9.29084 7.76199 9.54833 7.5045C9.80582 7.24701 10.1551 7.10235 10.5192 7.10235H15.5294C15.6503 7.09362 15.7633 7.03946 15.8458 6.95077C15.9283 6.86208 15.9742 6.74543 15.9742 6.6243C15.9742 6.50316 15.9283 6.38652 15.8458 6.29783C15.7633 6.20914 15.6503 6.15498 15.5294 6.14624H10.5192C9.90277 6.14756 9.31201 6.39319 8.87637 6.8293C8.44072 7.26542 8.19573 7.85644 8.19507 8.47287V15.6674C8.19573 16.2839 8.44072 16.8749 8.87637 17.311C9.31201 17.7471 9.90277 17.9927 10.5192 17.9941H15.5294C15.6392 17.9935 15.7455 17.9552 15.8305 17.8857C15.9154 17.8162 15.974 17.7196 15.9963 17.6121C16.0001 17.5806 16.0001 17.5488 15.9963 17.5172V10.2802C15.9957 10.2356 15.9898 10.1912 15.9788 10.1479" fill="white"/>
-                <path d="M15.5294 7.95386H10.5192C10.3984 7.96259 10.2853 8.01675 10.2028 8.10544C10.1203 8.19413 10.0745 8.31078 10.0745 8.43191C10.0745 8.55305 10.1203 8.66969 10.2028 8.75838C10.2853 8.84708 10.3984 8.90123 10.5192 8.90997H15.5294C15.6503 8.90123 15.7633 8.84708 15.8458 8.75838C15.9283 8.66969 15.9742 8.55305 15.9742 8.43191C15.9742 8.31078 15.9283 8.19413 15.8458 8.10544C15.7633 8.01675 15.6503 7.96259 15.5294 7.95386Z" fill="white"/>
-              </g>
-              <defs>
-                <clipPath id="clip0_1473_852">
-                  <rect width="24" height="24" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
-          {% endif %}
-        {% endfor %}
-        <span class="img">
-          <img src="{% if not page_results %}{{ MEDIA_URL }}{% endif %}{{ book.cover_photo }}" width="260"
-               alt="{% trans 'Cover photo of' %} {{ book.title }}" loading="lazy"/>
-        </span>
-        <span class="book-title">{{ book.title|truncatechars:24 }}</span>
-        <span class="book-author">{{ book.get_authors }}</span>
-      </a>
-    </div>
-  {% empty %}
-    <p>
-      {% if error %}
-        {{ error }}
-      {% elif search_query %}
-        {% trans "No results found for the search term" %}
-      {% else %}
-        {% trans "No books available" %} {% if book_category_slug %}{% trans "for the selected category" %}{% endif %}
-      {% endif %}
-    </p>
-  {% endfor %}
+  {% block list_content %}
+    {% for book in page_results|default:pager_object_list %}
+      <div class="book-item">
+        <a name="{{ book.slug }}" href="#{{ book.slug }}" data-bookslug="{{ book.slug }}">
+          <span class="img">
+            <img src="{% if not page_results %}{{ MEDIA_URL }}{% endif %}{{ book.cover_photo }}" width="260"
+                 alt="{% trans 'Cover photo of' %} {{ book.title }}" loading="lazy"/>
+          </span>
+          <span class="book-title">{{ book.title|truncatechars:24 }}</span>
+          <span class="book-author">{{ book.get_authors }}</span>
+        </a>
+      </div>
+    {% empty %}
+      <p>
+        {% if error %}
+          {{ error }}
+        {% elif search_query %}
+          {% trans "No results found for the search term" %}
+        {% else %}
+          {% trans "No books available" %} {% if book_category_slug %}{% trans "for the selected category" %}{% endif %}
+        {% endif %}
+      </p>
+    {% endfor %}
+  {% endblock %}
 </div>
 {% if pager.has_other_pages %}
   <div class="align-center pagination-container">

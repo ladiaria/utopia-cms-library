@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from search.models import get_query
 from search.views import dre, _paginate, _page_results
 
+from .apps import UtopiaCmsLibraryConfig as library_settings
 from .models import Book, BookCategory
 from .documents import BookDocument
 
@@ -120,4 +121,4 @@ def book_list(request):
             "error": error,
         }
     )
-    return render(request, "utopia_cms_library/book_list.html", context)
+    return render(request, library_settings.BOOK_LIST_TEMPLATE, context)

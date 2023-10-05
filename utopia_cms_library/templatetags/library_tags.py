@@ -1,6 +1,7 @@
 from django.template import Library, loader
 
-from utopia_cms_library.views import search
+from ..apps import UtopiaCmsLibraryConfig as library_settings
+from ..views import search
 
 
 register = Library()
@@ -18,4 +19,4 @@ def book_list(context, category_slug, search_query, page, ordering):
             "error": error,
         }
     )
-    return loader.render_to_string('utopia_cms_library/book_list.html', context.flatten())
+    return loader.render_to_string(library_settings.BOOK_LIST_TEMPLATE, context.flatten())

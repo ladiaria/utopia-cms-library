@@ -69,6 +69,9 @@ class Book(models.Model):
         func = library_settings.BOOK_URL_FUNCTION
         return locate(func)(self) if func else reverse("library-book-detail", kwargs={"slug": self.slug})
 
+    def get_categories_slugs(self):
+        return self.categories.values_list("slug", flat=True)
+
     def get_authors(self):
         return ", ".join(str(a) for a in self.authors.all())
 
