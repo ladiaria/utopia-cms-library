@@ -43,7 +43,6 @@ def search(search_query, category_slug, page, ordering=""):
 
             extra_kwargs = {}
             if settings.SEARCH_ELASTIC_MATCH_PHRASE:
-                elastic_match_phrase = True
                 extra_kwargs['type'] = 'phrase'
             elif settings.SEARCH_ELASTIC_USE_FUZZY:
                 extra_kwargs['fuzziness'] = 'auto'
