@@ -20,7 +20,9 @@ class BookDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['category_detail_urlname'] = self.request.GET.get('category_detail_urlname')
+        category_detail_urlname = self.request.GET.get("category_detail_urlname")
+        if category_detail_urlname:
+            context["category_detail_urlname"] = category_detail_urlname
         return context
 
 
