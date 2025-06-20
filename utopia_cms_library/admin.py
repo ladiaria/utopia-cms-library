@@ -51,7 +51,7 @@ class BookArticleInline(admin.TabularInline):
 @admin_thumbnails.thumbnail("cover_photo", _("cover photo"), append=False)
 class BookAdmin(admin.ModelAdmin):
     search_fields = ("title", "authors__name", "categories__name")
-    list_display = ("title", "get_authors", "year", "publisher", "cover_photo_thumbnail", "get_articles")
+    list_display = ("id", "title", "get_authors", "year", "publisher", "cover_photo_thumbnail", "get_articles")
     list_filter = ("authors", "publisher", "categories")
     exclude = ("articles", ) + (
         ("cover_photo_mobile", ) if getattr(settings, "UTOPIA_CMS_LIBRARY_EXCLUDE_COVER_PHOTO_MOBILE", False) else ()
