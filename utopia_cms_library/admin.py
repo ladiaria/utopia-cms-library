@@ -1,6 +1,7 @@
 import admin_thumbnails
 
 from martor.models import MartorField
+from martor.widgets import AdminMartorWidget
 
 from django.conf import settings
 from django.forms import ModelForm
@@ -9,7 +10,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from core.models import Article
-from core.admin import UtopiaCmsAdminMartorWidget
 
 from utopia_cms_library.models import (
     BookAuthor,
@@ -57,7 +57,7 @@ class BookAdmin(admin.ModelAdmin):
         ("cover_photo_mobile", ) if getattr(settings, "UTOPIA_CMS_LIBRARY_EXCLUDE_COVER_PHOTO_MOBILE", False) else ()
     )
     inlines = [BookArticleInline]
-    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
+    formfield_overrides = {MartorField: {"widget": AdminMartorWidget}}
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "articles":
@@ -66,6 +66,7 @@ class BookAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': ('css/admin_book.css', )}
+        js = ("admin/js/jquery.js", "js/utopiacms_martor_fullheight.js")
 
 
 class BooksNewsletterForm(ModelForm):
@@ -86,7 +87,7 @@ class BooksNewsletterBlockInline(admin.TabularInline):
     model = BooksNewsletterBlock
     form = BooksNewsletterBlockForm
     raw_id_fields = ("content", )
-    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
+    formfield_overrides = {MartorField: {"widget": AdminMartorWidget}}
 
 
 @admin.register(BooksNewsletter)
@@ -95,10 +96,11 @@ class BooksNewsletterAdmin(admin.ModelAdmin):
     inlines = [BooksNewsletterBlockInline]
     date_hierarchy = "day"
     list_display = ("day", "subject", "title")
-    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
+    formfield_overrides = {MartorField: {"widget": AdminMartorWidget}}
 
     class Media:
         css = {'all': ('css/admin_booksnewsletter.css', )}
+        js = ("admin/js/jquery.js", "js/utopiacms_martor_fullheight.js")
 
 
 class BooksNewsletterBlockRowForm(ModelForm):
@@ -112,7 +114,7 @@ class BooksNewsletterBlockRowForm(ModelForm):
 class BooksNewsletterBlockRowInline(admin.TabularInline):
     model = BooksNewsletterBlockContent.books.through
     form = BooksNewsletterBlockRowForm
-    formfield_overrides = {MartorField: {"widget": UtopiaCmsAdminMartorWidget}}
+    formfield_overrides = {MartorField: {"widget": AdminMartorWidget}}
     raw_id_fields = ("book", )
 
 
@@ -123,3 +125,4 @@ class BooksNewsletterBlockContentAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': ('css/admin_booksnewsletterblockcontent.css', )}
+        js = ("admin/js/jquery.js", "js/utopiacms_martor_fullheight.js")
