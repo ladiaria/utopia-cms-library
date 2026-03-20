@@ -1,13 +1,12 @@
-from elasticsearch_dsl import Q
-from elasticsearch_dsl.query import Nested
+from elasticsearch.dsl import Q
+from elasticsearch.dsl.query import Nested
 
 from django.conf import settings
 from django.views.generic import DetailView
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 
-from search.models import get_query
-from search.views import dre, _paginate, _page_results
+from search import models as search_models, views as search_views
 
 from .apps import UtopiaCmsLibraryConfig as library_settings
 from .models import Book, BookCategory
@@ -37,7 +36,7 @@ def search(search_query, category_slug, page, ordering=""):
     page_results, error = None, ""
 
     if search_query:
-        search_query = ''.join(dre.findall(search_query))
+        search_query = ''.join(search_views.dre.findall(search_query))
 
     if search_query and len(search_query) > 2:
 
@@ -79,7 +78,7 @@ def search(search_query, category_slug, page, ordering=""):
                 total = r.hits.total.value
                 # ES hits cannot be paginated with the same django Paginator class, we need to take the results
                 # for the page and simulate the dajngo pagination using a simple range list.
-                page_results, matches_query = _page_results(page, s, total, 16), list(range(total))
+                page_results, matches_query = search_views._page_results(page, s, total, 16), list(range(total))
             except Exception as exc:
                 if settings.DEBUG:
                     print("search error: %s" % exc)
@@ -90,7 +89,7 @@ def search(search_query, category_slug, page, ordering=""):
             if category_slug:
                 matches_query = matches_query.filter(categories__slug=category_slug)
             matches_query = matches_query.filter(
-                get_query(
+                search_models.get_query(
                     search_query,
                     ['title', 'year', 'publisher__name', 'description', 'authors__name', 'categories__name'],
                 )
@@ -105,7 +104,7 @@ def search(search_query, category_slug, page, ordering=""):
         if ordering:
             matches_query = matches_query.order_by(ordering)
 
-    return (search_query, page_results, matches_query and _paginate(page, matches_query, 16), error)
+    return (search_query, page_results, matches_query and search_views._paginate(page, matches_query, 16), error)
 
 
 def book_list(request):

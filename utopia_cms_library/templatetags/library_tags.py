@@ -1,7 +1,7 @@
 from django.template import Library, loader
 
 from ..apps import UtopiaCmsLibraryConfig as library_settings
-from ..views import search
+from utopia_cms_library import views as library_views
 
 
 register = Library()
@@ -9,7 +9,7 @@ register = Library()
 
 @register.simple_tag(takes_context=True)
 def book_list(context, category_slug, search_query, page, ordering):
-    search_query, page_results, pager, error = search(search_query, category_slug, page, ordering)
+    search_query, page_results, pager, error = library_views.search(search_query, category_slug, page, ordering)
     context.update(
         {
             "search_query": search_query,
