@@ -7,16 +7,23 @@
 </div>
 <div class="details">
   <h3 class="details-title">{{ object.title }}</h3>
-  <span class="details-author">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 0C9.06087 0 10.0783 0.421427 10.8284 1.17157C11.5786 1.92172 12 2.93913 12 4C12 5.06087 11.5786 6.07828 10.8284 6.82843C10.0783 7.57857 9.06087 8 8 8C6.93913 8 5.92172 7.57857 5.17157 6.82843C4.42143 6.07828 4 5.06087 4 4C4 2.93913 4.42143 1.92172 5.17157 1.17157C5.92172 0.421427 6.93913 0 8 0ZM8 2C7.46957 2 6.96086 2.21071 6.58579 2.58579C6.21071 2.96086 6 3.46957 6 4C6 4.53043 6.21071 5.03914 6.58579 5.41421C6.96086 5.78929 7.46957 6 8 6C8.53043 6 9.03914 5.78929 9.41421 5.41421C9.78929 5.03914 10 4.53043 10 4C10 3.46957 9.78929 2.96086 9.41421 2.58579C9.03914 2.21071 8.53043 2 8 2ZM8 9C10.67 9 16 10.33 16 13V15C16 15.5523 15.5523 16 15 16H1C0.447715 16 0 15.5523 0 15V13C0 10.33 5.33 9 8 9ZM8 10.9C5.03 10.9 1.9 12.36 1.9 13V14.1H14.1V13C14.1 12.36 10.97 10.9 8 10.9Z" fill="#A4A4A4"/><title>Ícono autor</title>
-    </svg> {{ object.get_authors }}
-  </span>
-  <span class="details-editorial-year">
-    <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 2.9998C1 1.8955 1.9207 1 3.0574 1H11.2861C12.4219 1 13.3426 1.8955 13.3426 2.9998V4.9996M1 2.9998V17.0002C1 18.1045 1.9207 19 3.0574 19H13.3426C14.4793 19 15.4 18.1045 15.4 17.0002V6.7996C15.4 6.32221 15.2104 5.86437 14.8728 5.52681C14.5352 5.18924 14.0774 4.9996 13.6 4.9996H3.0574C1.9207 4.9996 1 4.105 1 2.9998Z" stroke="#A4A4A4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><title>Ícono editorial</title>
-    </svg> {{ object.publisher }} | {{ object.year }}
-  </span>
+  <div class="details-meta">
+    <span class="details-author">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="#c7d0d3" d="M12 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8m0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4m0 7c2.67 0 8 1.33 8 4v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2c0-2.67 5.33-4 8-4m0 1.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1"/></svg>
+      {{ object.get_authors }}
+    </span>
+    <div class="details-pub-year">
+      <span class="details-publisher">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="#c7d0d3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 5c0-1.104.92-2 2.057-2h8.23c1.135 0 2.056.896 2.056 2v2M5 5v14c0 1.105.92 2 2.057 2h10.286c1.136 0 2.057-.895 2.057-2V8.8A1.8 1.8 0 0 0 17.6 7H7.057C5.921 7 5 6.105 5 5"/></svg>
+        {{ object.publisher }}
+      </span>
+      <span class="details-pub-year__divider" aria-hidden="true"></span>
+      <span class="details-year">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="#c7d0d3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 2v3m8-3v3M3.5 9.09h17M21 8.5V19c0 1.657-1.343 3-3 3H6c-1.657 0-3-1.343-3-3V8.5C3 6.843 4.343 5.5 6 5.5h12c1.657 0 3 1.343 3 3Z"/></svg>
+        {{ object.year }}
+      </span>
+    </div>
+  </div>
   <div class="details-categories">
     {% for category in object.categories.all %}
       <a href="{% url category_detail_urlname|default:'library-home' %}?q={{ category.slug }}" class="item">{{ category }}</a>
@@ -25,12 +32,15 @@
   <div class="details-desc">{{ object.description|safe_markdown }}</div>
   {% block related_articles %}
     <div class="details-block">
-      <h4 class="title">{% trans "Articles related to the book" %}</h4>
+      <div class="details-block__header">
+        <h4 class="details-block__title">{% trans "Articles related to the book" %}</h4>
+        <hr class="details-block__divider">
+      </div>
       <ul class="list">
         {% for article in object.articles.all %}
           <li class="item"><a href="{{ article.get_absolute_url }}">{{ article.headline|ldmarkup|bleach }}</a></li>
         {% empty %}
-          <li>{% trans "No articles related to this book yet" %}.</li>
+          <li class="item">{% trans "No articles related to this book yet" %}.</li>
         {% endfor %}
       </ul>
     </div>
